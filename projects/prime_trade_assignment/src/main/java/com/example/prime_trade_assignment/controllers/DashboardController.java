@@ -1,13 +1,14 @@
 package com.example.prime_trade_assignment.controllers;
 
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class SignupController {
+public class DashboardController {
 
-    @GetMapping("/signup")
-    public String signUp(){
-        return "signup.html";
+    @GetMapping("/dashboard")
+    public String dashBoard(){
+        return "dashboard.html";
     }
 }
