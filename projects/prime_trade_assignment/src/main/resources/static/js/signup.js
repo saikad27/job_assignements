@@ -1,9 +1,26 @@
-let buttonDiv = document.getElementById("submitDiv");
-buttonDiv.onclick = () => validate();
+//let buttonDiv = document.getElementById("submitDiv");
+//buttonDiv.onclick = () => validate();
+
 let passwordEle = document.getElementById("passwordInput");
 let confirmPasswordEle = document.getElementById("confirmPasswordInput");
 document.getElementById("showPassword").addEventListener("click",() => togglePasswordVisibility("passwordInput"));
 document.getElementById("showConfirmPassword").addEventListener("click",() => togglePasswordVisibility("confirmPasswordInput"));
+document.getElementById("submitDiv").addEventListener("click",()=>{
+    let result = validate();
+    console.log("result:"+result);
+    if(result!=null){
+        //fetch()
+        fetch('/signup',{
+        method:"POST",
+        headers:{"content-type":"application/json"},
+        body:JSON.stringify(result)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+        }).catch(err => console.error("Error registering user : ",err));
+    }
+});
 
 function togglePasswordVisibility(id){
     let passwordElement = document.getElementById(id);
@@ -33,17 +50,17 @@ function validate(){
     };
     switch(validator()){
         case "noUserName": alert("Username field cannot be empty");
-                        break;
+                            return null;
         case "noEmail": alert("Email field cannot be empty");
-                        break;
+                            return null;
         case "noPassword": alert("Password field cannot be empty");
-                        break;
+                            return null;
         case "noConfirmPassword": alert("Confirm password field cannot be empty");
-                        break;
+                            return null;
         case "incorrectPasswordFormat": alert("Incorrect password format\nPassword should contain:\n1. a number\n2. an upper case letter\n3. a lower case letter\n4. a special symbol");
-                        break;
+                            return null;
         case "passwordsNotEqual": alert("Password and confirm password should be same");
-                        break;
+                            return null;
     }
-
+    return {"userName":userName,"email":email,"password":password};
 }
