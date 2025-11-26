@@ -3,19 +3,26 @@ package com.example.prime_trade_assignment.controllers;
 import com.example.prime_trade_assignment.dto.UserDTO;
 import com.example.prime_trade_assignment.model.UserDetail;
 import com.example.prime_trade_assignment.repository.UserRepository;
+import com.example.prime_trade_assignment.service.UserService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
+import java.sql.SQLException;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Map;
+import java.util.Optional;
 
 @Controller
 public class SignupController {
-    private final UserRepository userRepository;
-    SignupController(UserRepository userRepository){
-        this.userRepository = userRepository;
+
+    private final UserService userService;
+    SignupController(UserService userService){
+        this.userService = userService;
     }
     @GetMapping("/signup")
     public String signUp(){
@@ -24,9 +31,12 @@ public class SignupController {
 
     @ResponseBody
     @PostMapping("/signup")
-    public UserDTO signUp(@RequestBody UserDTO userDTO){
-        System.out.println(userDTO);
-        userRepository.save(new UserDetail(null,userDTO.getUserName(),userDTO.getEmail(),userDTO.getPassword(), Date.valueOf(LocalDate.now()), Time.valueOf(LocalTime.now())));
-        return userDTO;
+    public ResponseEntity<?> signUp(@RequestBody UserDTO userDTO) {
+        try {
+            userService.processUser(userDTO);
+            return ResponseEntity.ok("User registered successfully!");
+        }catch(Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error",e.getMessage()));
+        }
     }
 }

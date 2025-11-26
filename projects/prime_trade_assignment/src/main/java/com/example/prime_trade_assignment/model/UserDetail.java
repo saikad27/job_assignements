@@ -9,6 +9,8 @@ import java.sql.Date;
 @Entity
 @Table(name="user_details")
 public class UserDetail {
+    public UserDetail() {
+    }
 
     public UserDetail(Long userId, String userName, String email, String password, Date registrationDate, Time registrationTime) {
         this.userId = userId;
@@ -22,8 +24,9 @@ public class UserDetail {
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE)
     private Long userId;
-
+    @Column(unique=true)
     private String userName;
+    @Column(unique=true)
     private String email;
     private String password;
     private Date registrationDate;
