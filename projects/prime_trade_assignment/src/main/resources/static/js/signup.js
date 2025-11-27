@@ -5,9 +5,9 @@ let passwordEle = document.getElementById("passwordInput");
 let confirmPasswordEle = document.getElementById("confirmPasswordInput");
 document.getElementById("showPassword").addEventListener("click",() => togglePasswordVisibility("passwordInput"));
 document.getElementById("showConfirmPassword").addEventListener("click",() => togglePasswordVisibility("confirmPasswordInput"));
-document.getElementById("submitDiv").addEventListener("click",()=>{
+document.getElementById("register_button").addEventListener("click",()=>{
     let result = validate();
-    console.log("result:"+result);
+    //console.log("result:"+result);
     if(result!=null){
         //fetch()
         fetch('/signup',{
@@ -15,10 +15,29 @@ document.getElementById("submitDiv").addEventListener("click",()=>{
         headers:{"content-type":"application/json"},
         body:JSON.stringify(result)
         })
-        .then(response => response.json())
-        .then(data => {
+        .then(response => {
+            const data = response.json();
             console.log(data);
-        }).catch(err => console.error("Error registering user : ",err));
+            if (!response.ok) {
+                // Pass your backend message to catch()
+                throw new Error("Username/email already exists");
+            }
+            return data;
+        })
+        .then(data => {
+            //window.location.href="/login";
+            document.getElementById("userNameInput").value = "";
+            document.getElementById("emailInput").value = "";
+            document.getElementById("passwordInput").value = "";
+            document.getElementById("confirmPasswordInput").value = "";
+            console.log(data);
+            document.getElementById("registration_message").textContent = "Registration Successful";
+            }
+        ).catch(err => {
+        window.location.href="/signup";
+        alert(err);
+        console.error("Error registering user : ",err);
+        });
     }
 });
 
@@ -42,6 +61,7 @@ function validate(){
     let validator = () => {
         if(userName.length==0) return "noUserName";
         if(email.length==0) return "noEmail";
+        if(!email.includes("@")) return "invalidEmail";
         if(password.length==0) return "noPassword";
         if(password.length<8 || !passwordContainsNumber || !passwordContainsLowerCase || !passwordContainsUpperCase || !passwordContainsSpecialSymbol)
             return "incorrectPasswordFormat";
@@ -52,6 +72,8 @@ function validate(){
         case "noUserName": alert("Username field cannot be empty");
                             return null;
         case "noEmail": alert("Email field cannot be empty");
+                            return null;
+        case "invalidEmail": alert("Invalid email");
                             return null;
         case "noPassword": alert("Password field cannot be empty");
                             return null;
@@ -64,3 +86,5 @@ function validate(){
     }
     return {"userName":userName,"email":email,"password":password};
 }
+
+document.getElementById("login_button").addEventListener("click",() => {window.location.href = 'login'});

@@ -11,14 +11,16 @@ document.getElementById("submitButton").addEventListener("click",() => {
     let result = validate();
     if(result!=null){
         fetch('/login',{
-                method:"POST",
-                headers:{"content-type":"application/json"},
-                body:JSON.stringify(result)
-                })
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data);
-                }).catch(err => console.error("Error logging in user : ",err));
+            method:"POST",
+            headers:{"content-type":"application/json"},
+            body:JSON.stringify(result)
+        }).then(response => response.json()).then(data => {
+        console.log(data);
+        localStorage.setItem("token",data.token);
+        document.getElementById("userIdInput").value = "";
+        document.getElementById("passwordInput").value = "";
+            window.location.href = "/dashboard";
+        }).catch(err => {console.error("Error logging in user : ",err);});
     }
 
 });

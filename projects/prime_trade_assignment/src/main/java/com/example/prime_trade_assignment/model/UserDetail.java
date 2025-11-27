@@ -12,14 +12,6 @@ public class UserDetail {
     public UserDetail() {
     }
 
-    public UserDetail(Long userId, String userName, String email, String password, Date registrationDate, Time registrationTime) {
-        this.userId = userId;
-        this.userName = userName;
-        this.email = email;
-        this.password = password;
-        this.registrationDate = registrationDate;
-        this.registrationTime = registrationTime;
-    }
 
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE)
@@ -28,9 +20,41 @@ public class UserDetail {
     private String userName;
     @Column(unique=true)
     private String email;
+    private String role;
     private String password;
     private Date registrationDate;
     private Time registrationTime;
+
+    public UserDetail(Long userId, String userName, String email, String role, String password, Date registrationDate, Time registrationTime) {
+        this.userId = userId;
+        this.userName = userName;
+        this.email = email;
+        this.role = role;
+        this.password = password;
+        this.registrationDate = registrationDate;
+        this.registrationTime = registrationTime;
+    }
+
+    @Override
+    public String toString() {
+        return "UserDetail{" +
+                "userId=" + userId +
+                ", userName='" + userName + '\'' +
+                ", email='" + email + '\'' +
+                ", role='" + role + '\'' +
+                ", password='" + password + '\'' +
+                ", registrationDate=" + registrationDate +
+                ", registrationTime=" + registrationTime +
+                '}';
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 
     public Long getUserId() {
         return userId;
@@ -80,15 +104,4 @@ public class UserDetail {
         this.registrationTime = registrationTime;
     }
 
-    @Override
-    public String toString() {
-        return "UserDetails{" +
-                "userId=" + userId +
-                ", userName='" + userName + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", registrationDate=" + registrationDate +
-                ", registrationTime=" + registrationTime +
-                '}';
-    }
 }
