@@ -7,4 +7,4 @@ Follow these instructions to run this project:
 5. Edit the application-template.properties file (add your database credentials for ex. DATABASE_NAME,USER_NAME,PASSWORD)
 6. After completing these steps you are good to go.
 7. Hit run
-8. And in you brower go to http://localhost:8080/signup
+8. And in your brower go to http://localhost:8080/signup
